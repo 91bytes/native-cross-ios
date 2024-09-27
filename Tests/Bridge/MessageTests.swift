@@ -1,4 +1,4 @@
-@testable import HotwireNative
+@testable import NativeCross
 import XCTest
 
 class MessageTests: XCTestCase {
@@ -8,9 +8,9 @@ class MessageTests: XCTestCase {
         let encoder = JSONEncoder()
         // Sort keys for deterministic matching.
         encoder.outputFormatting = [.sortedKeys]
-        Hotwire.config.jsonEncoder = encoder
+        NativeCross.config.jsonEncoder = encoder
 
-        Hotwire.config.jsonDecoder = JSONDecoder()
+        NativeCross.config.jsonDecoder = JSONDecoder()
     }
     
     // MARK: replacing(event:, jsonData:)
@@ -165,7 +165,7 @@ class MessageTests: XCTestCase {
     func test_decodingWithCustomDecoder() {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        Hotwire.config.jsonDecoder = decoder
+        NativeCross.config.jsonDecoder = decoder
 
         let jsonData = """
         {"title":"Page-title","subtitle":"Page-subtitle", "action_name": "go"}
@@ -190,7 +190,7 @@ class MessageTests: XCTestCase {
     func test_encodingWithCustomEncoder() throws {
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
-        Hotwire.config.jsonEncoder = encoder
+        NativeCross.config.jsonEncoder = encoder
 
         let messageData = MessageData(title: "Page-title",
                                       subtitle: "Page-subtitle",

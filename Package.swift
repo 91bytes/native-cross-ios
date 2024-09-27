@@ -3,14 +3,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "HotwireNative",
+    name: "NativeCross",
     platforms: [
         .iOS(.v14),
     ],
     products: [
         .library(
-            name: "HotwireNative",
-            targets: ["HotwireNative"]
+            name: "NativeCross",
+            targets: ["NativeCross"]
         ),
     ],
     dependencies: [
@@ -19,7 +19,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "HotwireNative",
+            name: "NativeCross",
             dependencies: [],
             path: "Source",
             resources: [
@@ -28,9 +28,9 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "HotwireNativeTests",
+            name: "NativeCrossTests",
             dependencies: [
-                "HotwireNative",
+                "NativeCross",
                 .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs"),
                 .product(name: "Embassy", package: "Embassy")
             ],

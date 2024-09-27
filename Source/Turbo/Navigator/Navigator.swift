@@ -6,7 +6,7 @@ import WebKit
 class DefaultNavigatorDelegate: NSObject, NavigatorDelegate {}
 
 /// Handles navigation to new URLs using the following rules:
-/// [Navigator Handled Flows](https://github.com/hotwired/turbo-ios/Docs/Navigator.md)
+/// [Navigator Handled Flows](https://github.com/NativeCrossd/turbo-ios/Docs/Navigator.md)
 public class Navigator {
     public unowned var delegate: NavigatorDelegate
 
@@ -30,10 +30,10 @@ public class Navigator {
     ///   - pathConfiguration: _optional:_ remote configuration reference
     ///   - delegate: _optional:_ delegate to handle custom view controllers
     public convenience init(pathConfiguration: PathConfiguration? = nil, delegate: NavigatorDelegate? = nil) {
-        let session = Session(webView: Hotwire.config.makeWebView())
+        let session = Session(webView: NativeCross.config.makeWebView())
         session.pathConfiguration = pathConfiguration
 
-        let modalSession = Session(webView: Hotwire.config.makeWebView())
+        let modalSession = Session(webView: NativeCross.config.makeWebView())
         modalSession.pathConfiguration = pathConfiguration
 
         self.init(session: session, modalSession: modalSession, delegate: delegate)
@@ -150,7 +150,7 @@ public class Navigator {
     private func controller(for proposal: VisitProposal) -> UIViewController? {
         switch delegate.handle(proposal: proposal) {
         case .accept:
-            Hotwire.config.defaultViewController(proposal.url)
+            NativeCross.config.defaultViewController(proposal.url)
         case .acceptCustom(let customViewController):
             customViewController
         case .reject:
@@ -310,7 +310,7 @@ extension Navigator {
         guard let _ = session.activeVisitable?.visitableViewController,
               let url = session.activeVisitable?.visitableURL else { return }
 
-        let newSession = Session(webView: Hotwire.config.makeWebView())
+        let newSession = Session(webView: NativeCross.config.makeWebView())
         newSession.pathConfiguration = session.pathConfiguration
         newSession.delegate = self
         newSession.webView.uiDelegate = webkitUIDelegate

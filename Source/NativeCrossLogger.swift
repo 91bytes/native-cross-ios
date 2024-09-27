@@ -1,15 +1,15 @@
 import Foundation
 import os.log
 
-enum HotwireLogger {
+enum NativeCrossLogger {
     static var debugLoggingEnabled: Bool = false {
         didSet {
             logger = debugLoggingEnabled ? enabledLogger : disabledLogger
         }
     }
 
-    static let enabledLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "Hotwire")
+    static let enabledLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "NativeCross")
     static let disabledLogger = Logger(.disabled)
 }
 
-var logger = HotwireLogger.disabledLogger
+var logger = NativeCrossLogger.disabledLogger

@@ -1,6 +1,6 @@
 import Foundation
 
-/// A `JavaScript` managed visit through the Hotwire library.
+/// A `JavaScript` managed visit through the NativeCross library.
 /// All visits are `JavaScriptVisits` except the initial `ColdBootVisit`
 /// or if a `reload()` is issued.
 final class JavaScriptVisit: Visit {

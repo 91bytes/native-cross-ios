@@ -2,12 +2,12 @@ import UIKit
 import WebKit
 
 /// A base controller to use or subclass that handles bridge lifecycle callbacks.
-/// Use `Hotwire.registerBridgeComponents(_:)` to register bridge components.
-open class HotwireWebViewController: VisitableViewController, BridgeDestination {
+/// Use `NativeCross.registerBridgeComponents(_:)` to register bridge components.
+open class NativeCrossWebViewController: VisitableViewController, BridgeDestination {
     public lazy var bridgeDelegate = BridgeDelegate(
         location: visitableURL.absoluteString,
         destination: self,
-        componentTypes: Hotwire.bridgeComponentTypes
+        componentTypes: NativeCross.bridgeComponentTypes
     )
 
     // MARK: View lifecycle
@@ -15,10 +15,10 @@ open class HotwireWebViewController: VisitableViewController, BridgeDestination 
     override open func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.backButtonDisplayMode = Hotwire.config.backButtonDisplayMode
+        navigationItem.backButtonDisplayMode = NativeCross.config.backButtonDisplayMode
         view.backgroundColor = .systemBackground
 
-        if Hotwire.config.showDoneButtonOnModals {
+        if NativeCross.config.showDoneButtonOnModals {
             addDoneButtonToModals()
         }
 

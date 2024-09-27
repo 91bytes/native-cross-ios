@@ -25,8 +25,8 @@ class NavigationHierarchyController {
 
     init(
         delegate: NavigationHierarchyControllerDelegate,
-        navigationController: UINavigationController = Hotwire.config.defaultNavigationController(),
-        modalNavigationController: UINavigationController = Hotwire.config.defaultNavigationController()
+        navigationController: UINavigationController = NativeCross.config.defaultNavigationController(),
+        modalNavigationController: UINavigationController = NativeCross.config.defaultNavigationController()
     ) {
         self.delegate = delegate
         self.navigationController = navigationController

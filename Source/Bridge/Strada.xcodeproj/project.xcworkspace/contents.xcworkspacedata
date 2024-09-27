@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/zachwaugh/Work/hotwired/strada-ios/Strada.xcodeproj">
+      location = "self:/Users/zachwaugh/Work/NativeCrossd/strada-ios/Strada.xcodeproj">
    </FileRef>
 </Workspace>

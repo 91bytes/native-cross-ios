@@ -1,4 +1,4 @@
-@testable import HotwireNative
+@testable import NativeCross
 import SafariServices
 import XCTest
 

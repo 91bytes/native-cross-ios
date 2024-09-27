@@ -2,7 +2,7 @@ import UIKit
 import WebKit
 
 /// A Session represents the main interface for managing
-/// a Hotwire app in a web view. Each Session manages a single web view
+/// a NativeCross app in a web view. Each Session manages a single web view
 /// so you should create multiple sessions to have multiple web views, for example
 /// when using modals or tabs
 public class Session: NSObject {

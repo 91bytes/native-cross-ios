@@ -1,4 +1,4 @@
-import HotwireNative
+import NativeCross
 import SafariServices
 import UIKit
 import WebKit
@@ -12,7 +12,7 @@ final class SceneController: UIResponder {
     // MARK: - Setup
 
     private func configureBridge() {
-        Hotwire.registerBridgeComponents([
+        NativeCross.registerBridgeComponents([
             FormComponent.self,
             MenuComponent.self,
             OverflowMenuComponent.self,
@@ -67,7 +67,7 @@ extension SceneController: NavigatorDelegate {
             return .acceptCustom(alertController)
 
         default:
-            return .acceptCustom(HotwireWebViewController(url: proposal.url))
+            return .acceptCustom(NativeCrossWebViewController(url: proposal.url))
         }
     }
 }

@@ -1,10 +1,10 @@
-# Contributing to Hotwire Native iOS
+# Contributing to Native Cross iOS
 
 Note that we have a [code of conduct](/CODE_OF_CONDUCT.md). Please follow it in your interactions with this project.
 
 ## Developing locally
 
-Hotwire Native for iOS is built using Swift 5.3 and iOS 14 as its minimum version. To set up your development environment:
+Native Cross for iOS is built using Swift 5.3 and iOS 14 as its minimum version. To set up your development environment:
 
 1. Clone the repo
 1. Open the directory in Xcode 15+ to install Swift packages
@@ -27,6 +27,6 @@ Before submitting a pull request, please:
 
 ## Feature parity with Android
 
-New features will not be merged until also added to [Hotwire Native Android](https://github.com/hotwired/hotwire-native-android).
+New features will not be merged until also added to [Native Cross Android](https://github.com/NativeCrossd/NativeCross-native-android).
 
 This does not apply to bugs that only appear on iOS.
