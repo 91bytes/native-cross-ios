@@ -45,9 +45,9 @@ public class Navigator {
     /// - Parameter url: the URL to visit
     /// - Parameter options: passed options will override default `advance` visit options
     /// - Parameter parameters: provide context relevant to `url`
-    public func route(_ url: URL, options: VisitOptions? = VisitOptions(action: .advance), parameters: [String: Any]? = nil) {
+    public func route(_ url: URL, options: VisitOptions, parameters: [String: Any]? = nil) {
         let properties = session.pathConfiguration?.properties(for: url) ?? PathProperties()
-        route(VisitProposal(url: url, options: options ?? .init(action: .advance), properties: properties))
+        route(VisitProposal(url: url, options: options, properties: properties))
     }
 
     /// Transforms `VisitProposal` -> `UIViewController`
@@ -227,9 +227,9 @@ extension Navigator: NavigationHierarchyControllerDelegate {
     func refreshVisitable(navigationStack: NavigationHierarchyController.NavigationStackType, newTopmostVisitable: any Visitable) {
         switch navigationStack {
         case .main:
-            session.visit(newTopmostVisitable, action: .restore)
+            session.visit(newTopmostVisitable, action: .pop)
         case .modal:
-            modalSession.visit(newTopmostVisitable, action: .restore)
+            modalSession.visit(newTopmostVisitable, action: .pop)
         }
     }
 }
@@ -321,7 +321,7 @@ extension Navigator {
             modalSession = newSession
         }
 
-        let options = VisitOptions(action: .replace, response: nil)
+        let options = VisitOptions(action: .replace)
         let properties = session.pathConfiguration?.properties(for: url) ?? PathProperties()
         route(VisitProposal(url: url, options: options, properties: properties))
     }

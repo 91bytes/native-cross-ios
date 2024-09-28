@@ -61,20 +61,21 @@
       return "ios"
     }
 
-    // Native handler
-
+    /*
+     * Native handler
+     * @param {string} message
+     * @returns {void}
+     */
     postMessage(message) {
       webkit.messageHandlers.bridge.postMessage(message)
     }
 
     get isWebBridgeAvailable() {
-        // Fallback to Strada for legacy Strada web JavaScript.
-      return window.Bridge ?? window.Strada
+      return !!window.Bridge
     }
 
     get webBridge() {
-      // Fallback to Strada for legacy Strada web JavaScript.
-      return window.Bridge?.web ?? window.Strada.web
+      return window.Bridge?.web
     }
   }
 

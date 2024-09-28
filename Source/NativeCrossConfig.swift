@@ -5,9 +5,7 @@ public struct NativeCrossConfig {
     public typealias WebViewBlock = (_ configuration: WKWebViewConfiguration) -> WKWebView
 
     /// Override to set a custom user agent.
-    /// - Important: Include "Native Cross" or "Turbo Native" to use `turbo_native_app?`
-    /// on your Rails server.
-    public var userAgent = "Native Cross iOS; Turbo Native iOS"
+    public var userAgent = "Native Cross iOS"
 
     /// When enabled, adds a `UIBarButtonItem` of type `.done` to the left
     /// navigation bar button item on screens presented modally.

@@ -12,22 +12,9 @@ final class ColdBootVisit: Visit {
         webView.navigationDelegate = self
         bridge.pageLoadDelegate = self
 
-        if let response = options.response, response.isSuccessful, let body = response.responseHTML {
-            navigation = webView.loadHTMLString(body, baseURL: location)
-        } else {
-            navigation = webView.load(URLRequest(url: location))
-        }
+        navigation = webView.load(URLRequest(url: location))
 
         delegate?.visitDidStart(self)
-        startRequest()
-    }
-
-    override func cancelVisit() {
-        log("cancelVisit")
-
-        removeNavigationDelegate()
-        webView.stopLoading()
-        finishRequest()
     }
 
     override func completeVisit() {
@@ -41,7 +28,6 @@ final class ColdBootVisit: Visit {
         log("failVisit")
 
         removeNavigationDelegate()
-        finishRequest()
     }
 
     private func removeNavigationDelegate() {
@@ -57,7 +43,7 @@ final class ColdBootVisit: Visit {
 extension ColdBootVisit: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard navigation == self.navigation else { return }
-        finishRequest()
+        completeVisit()
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -108,7 +94,7 @@ extension ColdBootVisit: WKNavigationDelegate {
 extension ColdBootVisit: WebViewPageLoadDelegate {
     func webView(_ bridge: WebViewBridge, didLoadPageWithRestorationIdentifier restorationIdentifier: String) {
         self.restorationIdentifier = restorationIdentifier
-        delegate?.visitDidRender(self)
+        delegate?.visitDidComplete(self)
         complete()
     }
 }

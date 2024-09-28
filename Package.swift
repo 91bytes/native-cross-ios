@@ -23,7 +23,7 @@ let package = Package(
             dependencies: [],
             path: "Source",
             resources: [
-                .copy("Turbo/WebView/turbo.js"),
+                .copy("NativeNavigation/WebView/native-navigation.js"),
                 .copy("Bridge/bridge.js")
             ]
         ),
