@@ -1,5 +1,5 @@
 import Foundation
-import HotwireNative
+import NativeCross
 import UIKit
 
 /// Bridge component to display a native 3-dot menu in the toolbar,

@@ -6,7 +6,7 @@ import WebKit
 class DefaultNavigatorDelegate: NSObject, NavigatorDelegate {}
 
 /// Handles navigation to new URLs using the following rules:
-/// [Navigator Handled Flows](https://github.com/hotwired/turbo-ios/Docs/Navigator.md)
+/// [Navigator Handled Flows](https://github.com/NativeCrossd/turbo-ios/Docs/Navigator.md)
 public class Navigator {
     public unowned var delegate: NavigatorDelegate
 
@@ -30,10 +30,10 @@ public class Navigator {
     ///   - pathConfiguration: _optional:_ remote configuration reference
     ///   - delegate: _optional:_ delegate to handle custom view controllers
     public convenience init(pathConfiguration: PathConfiguration? = nil, delegate: NavigatorDelegate? = nil) {
-        let session = Session(webView: Hotwire.config.makeWebView())
+        let session = Session(webView: NativeCross.config.makeWebView())
         session.pathConfiguration = pathConfiguration
 
-        let modalSession = Session(webView: Hotwire.config.makeWebView())
+        let modalSession = Session(webView: NativeCross.config.makeWebView())
         modalSession.pathConfiguration = pathConfiguration
 
         self.init(session: session, modalSession: modalSession, delegate: delegate)
@@ -45,9 +45,9 @@ public class Navigator {
     /// - Parameter url: the URL to visit
     /// - Parameter options: passed options will override default `advance` visit options
     /// - Parameter parameters: provide context relevant to `url`
-    public func route(_ url: URL, options: VisitOptions? = VisitOptions(action: .advance), parameters: [String: Any]? = nil) {
+    public func route(_ url: URL, options: VisitOptions, parameters: [String: Any]? = nil) {
         let properties = session.pathConfiguration?.properties(for: url) ?? PathProperties()
-        route(VisitProposal(url: url, options: options ?? .init(action: .advance), properties: properties))
+        route(VisitProposal(url: url, options: options, properties: properties))
     }
 
     /// Transforms `VisitProposal` -> `UIViewController`
@@ -150,7 +150,7 @@ public class Navigator {
     private func controller(for proposal: VisitProposal) -> UIViewController? {
         switch delegate.handle(proposal: proposal) {
         case .accept:
-            Hotwire.config.defaultViewController(proposal.url)
+            NativeCross.config.defaultViewController(proposal.url)
         case .acceptCustom(let customViewController):
             customViewController
         case .reject:
@@ -227,9 +227,9 @@ extension Navigator: NavigationHierarchyControllerDelegate {
     func refreshVisitable(navigationStack: NavigationHierarchyController.NavigationStackType, newTopmostVisitable: any Visitable) {
         switch navigationStack {
         case .main:
-            session.visit(newTopmostVisitable, action: .restore)
+            session.visit(newTopmostVisitable, action: .pop)
         case .modal:
-            modalSession.visit(newTopmostVisitable, action: .restore)
+            modalSession.visit(newTopmostVisitable, action: .pop)
         }
     }
 }
@@ -310,7 +310,7 @@ extension Navigator {
         guard let _ = session.activeVisitable?.visitableViewController,
               let url = session.activeVisitable?.visitableURL else { return }
 
-        let newSession = Session(webView: Hotwire.config.makeWebView())
+        let newSession = Session(webView: NativeCross.config.makeWebView())
         newSession.pathConfiguration = session.pathConfiguration
         newSession.delegate = self
         newSession.webView.uiDelegate = webkitUIDelegate
@@ -321,7 +321,7 @@ extension Navigator {
             modalSession = newSession
         }
 
-        let options = VisitOptions(action: .replace, response: nil)
+        let options = VisitOptions(action: .replace)
         let properties = session.pathConfiguration?.properties(for: url) ?? PathProperties()
         route(VisitProposal(url: url, options: options, properties: properties))
     }

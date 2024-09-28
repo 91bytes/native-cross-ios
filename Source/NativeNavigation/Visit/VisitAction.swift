@@ -1,7 +1,7 @@
 import Foundation
 
 public enum VisitAction: String, Codable {
-    case advance
+    case push
     case replace
-    case restore
+    case pop
 }

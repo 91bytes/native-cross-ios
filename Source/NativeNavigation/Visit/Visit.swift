@@ -37,64 +37,26 @@ class Visit: NSObject {
         startVisit()
     }
 
-    func cancel() {
-        guard state == .started else { return }
-
-        state = .canceled
-        cancelVisit()
-    }
-
     func complete() {
         guard state == .started else { return }
-
-        if !requestFinished {
-            finishRequest()
-        }
 
         state = .completed
 
         completeVisit()
         delegate?.visitDidComplete(self)
-        delegate?.visitDidFinish(self)
     }
 
     func fail(with error: Error) {
         guard state == .started else { return }
 
         state = .failed
-        delegate?.visit(self, requestDidFailWithError: error)
         failVisit()
         delegate?.visitDidFail(self)
-        delegate?.visitDidFinish(self)
-    }
-
-    func cacheSnapshot() {
-        bridge.cacheSnapshot()
     }
 
     func startVisit() {}
-    func cancelVisit() {}
     func completeVisit() {}
     func failVisit() {}
-
-    // MARK: Request state
-
-    private var requestStarted = false
-    private var requestFinished = false
-
-    func startRequest() {
-        guard !requestStarted else { return }
-
-        requestStarted = true
-        delegate?.visitRequestDidStart(self)
-    }
-
-    func finishRequest() {
-        guard requestStarted, !requestFinished else { return }
-
-        requestFinished = true
-        delegate?.visitRequestDidFinish(self)
-    }
 }
 
 // CustomDebugStringConvertible

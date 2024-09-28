@@ -1,26 +1,24 @@
 import UIKit
 import WebKit
 
-public struct HotwireConfig {
+public struct NativeCrossConfig {
     public typealias WebViewBlock = (_ configuration: WKWebViewConfiguration) -> WKWebView
 
     /// Override to set a custom user agent.
-    /// - Important: Include "Hotwire Native" or "Turbo Native" to use `turbo_native_app?`
-    /// on your Rails server.
-    public var userAgent = "Hotwire Native iOS; Turbo Native iOS"
+    public var userAgent = "Native Cross iOS"
 
     /// When enabled, adds a `UIBarButtonItem` of type `.done` to the left
     /// navigation bar button item on screens presented modally.
     public var showDoneButtonOnModals = false
 
-    /// Sets the back button display mode of `HotwireWebViewController`.
+    /// Sets the back button display mode of `NativeCrossWebViewController`.
     public var backButtonDisplayMode = UINavigationItem.BackButtonDisplayMode.default
 
     /// Enable or disable debug logging for Turbo visits and bridge elements
     /// connecting, disconnecting, receiving/sending messages, and more.
     public var debugLoggingEnabled = false {
         didSet {
-            HotwireLogger.debugLoggingEnabled = debugLoggingEnabled
+            NativeCrossLogger.debugLoggingEnabled = debugLoggingEnabled
         }
     }
 
@@ -32,7 +30,7 @@ public struct HotwireConfig {
     /// The view controller used in `Navigator` for web requests. Must be
     /// a `VisitableViewController` or subclass.
     public var defaultViewController: (URL) -> VisitableViewController = { url in
-        HotwireWebViewController(url: url)
+        NativeCrossWebViewController(url: url)
     }
 
     /// The navigation controller used in `Navigator` for the main and modal stacks.
@@ -79,7 +77,7 @@ public struct HotwireConfig {
     }
 }
 
-public extension HotwireConfig {
+public extension NativeCrossConfig {
     class PathConfiguration {
         /// Enable to include the query string (in addition to the path) when applying rules.
         /// Disable to only consider the path when applying rules.

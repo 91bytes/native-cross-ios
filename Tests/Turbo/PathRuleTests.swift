@@ -1,4 +1,4 @@
-@testable import HotwireNative
+@testable import NativeCross
 import XCTest
 
 class PathRuleTests: XCTestCase {

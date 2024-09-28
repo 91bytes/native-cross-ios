@@ -1,4 +1,4 @@
-@testable import HotwireNative
+@testable import NativeCross
 import OHHTTPStubs
 import OHHTTPStubsSwift
 import XCTest

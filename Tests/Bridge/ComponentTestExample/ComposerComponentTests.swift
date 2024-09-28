@@ -1,4 +1,4 @@
-import HotwireNative
+import NativeCross
 import WebKit
 import XCTest
 

@@ -7,7 +7,7 @@ concurrency:
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
 
 jobs:
@@ -23,4 +23,4 @@ jobs:
           xcode-version: latest-stable
 
       - name: Run Tests
-        run: xcodebuild test -scheme HotwireNative -destination "name=iPhone 15 Pro" | xcpretty && exit ${PIPESTATUS[0]}
+        run: xcodebuild test -scheme NativeCross -destination "name=iPhone 15 Pro" | xcpretty && exit ${PIPESTATUS[0]}

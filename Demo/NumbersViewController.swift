@@ -1,4 +1,4 @@
-import HotwireNative
+import NativeCross
 import UIKit
 
 /// A simple native table view controller to demonstrate loading non-Turbo screens

@@ -25,8 +25,8 @@ class NavigationHierarchyController {
 
     init(
         delegate: NavigationHierarchyControllerDelegate,
-        navigationController: UINavigationController = Hotwire.config.defaultNavigationController(),
-        modalNavigationController: UINavigationController = Hotwire.config.defaultNavigationController()
+        navigationController: UINavigationController = NativeCross.config.defaultNavigationController(),
+        modalNavigationController: UINavigationController = NativeCross.config.defaultNavigationController()
     ) {
         self.delegate = delegate
         self.navigationController = navigationController
@@ -122,7 +122,7 @@ class NavigationHierarchyController {
             navigationController.replaceLastViewController(with: controller)
         } else if visitingPreviousPage(on: navigationController, with: controller, via: proposal.url) {
             navigationController.popViewController(animated: proposal.animated)
-        } else if proposal.options.action == .advance {
+        } else if proposal.options.action == .push {
             navigationController.pushViewController(controller, animated: proposal.animated)
         } else {
             navigationController.replaceLastViewController(with: controller)

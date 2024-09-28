@@ -3,14 +3,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "HotwireNative",
+    name: "NativeCross",
     platforms: [
         .iOS(.v14),
     ],
     products: [
         .library(
-            name: "HotwireNative",
-            targets: ["HotwireNative"]
+            name: "NativeCross",
+            targets: ["NativeCross"]
         ),
     ],
     dependencies: [
@@ -19,18 +19,18 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "HotwireNative",
+            name: "NativeCross",
             dependencies: [],
             path: "Source",
             resources: [
-                .copy("Turbo/WebView/turbo.js"),
+                .copy("NativeNavigation/WebView/native-navigation.js"),
                 .copy("Bridge/bridge.js")
             ]
         ),
         .testTarget(
-            name: "HotwireNativeTests",
+            name: "NativeCrossTests",
             dependencies: [
-                "HotwireNative",
+                "NativeCross",
                 .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs"),
                 .product(name: "Embassy", package: "Embassy")
             ],

@@ -1,5 +1,5 @@
 import Foundation
-import HotwireNative
+import NativeCross
 import XCTest
 
 final class ComposerComponent: BridgeComponent {

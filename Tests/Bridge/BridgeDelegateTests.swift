@@ -1,5 +1,5 @@
 import Foundation
-@testable import HotwireNative
+@testable import NativeCross
 import WebKit
 import XCTest
 

@@ -1,5 +1,5 @@
 import Foundation
-import HotwireNative
+import NativeCross
 
 final class BridgeComponentSpy: BridgeComponent {
     override static var name: String { "two" }

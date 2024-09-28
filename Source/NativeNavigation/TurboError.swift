@@ -1,6 +1,6 @@
 import Foundation
 
-// https://github.com/hotwired/turbo/blob/main/src/core/drive/visit.js#L33-L37
+// https://github.com/NativeCrossd/turbo/blob/main/src/core/drive/visit.js#L33-L37
 public enum TurboError: LocalizedError, Equatable {
     case networkFailure
     case timeoutFailure

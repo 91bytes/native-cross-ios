@@ -1,4 +1,4 @@
-@testable import HotwireNative
+@testable import NativeCross
 import XCTest
 
 class PathConfigurationTests: XCTestCase {
@@ -43,10 +43,10 @@ class PathConfigurationTests: XCTestCase {
     func test_propertiesForURL_withParams() {
         let url = URL(string: "http://turbo.test/sample.pdf?open_in_external_browser=true")!
 
-        Hotwire.config.pathConfiguration.matchQueryStrings = false
+        NativeCross.config.pathConfiguration.matchQueryStrings = false
         XCTAssertEqual(configuration.properties(for: url), [:])
 
-        Hotwire.config.pathConfiguration.matchQueryStrings = true
+        NativeCross.config.pathConfiguration.matchQueryStrings = true
         XCTAssertEqual(configuration.properties(for: url), [
             "open_in_external_browser": true
         ])

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,7 +17,7 @@
 		844BA7B72B9A488A008F48DB /* NumbersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BA7AC2B9A488A008F48DB /* NumbersViewController.swift */; };
 		844BA7B82B9A488A008F48DB /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BA7AD2B9A488A008F48DB /* Demo.swift */; };
 		844BA7B92B9A488A008F48DB /* path-configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 844BA7AE2B9A488A008F48DB /* path-configuration.json */; };
-		848E12212BD813CA009BB0A4 /* HotwireNative in Frameworks */ = {isa = PBXBuildFile; productRef = 848E12202BD813CA009BB0A4 /* HotwireNative */; };
+		8C6329102CA82B14005F63C2 /* NativeCross in Frameworks */ = {isa = PBXBuildFile; productRef = 8C63290F2CA82B14005F63C2 /* NativeCross */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,6 @@
 		844BA7AC2B9A488A008F48DB /* NumbersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumbersViewController.swift; sourceTree = "<group>"; };
 		844BA7AD2B9A488A008F48DB /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		844BA7AE2B9A488A008F48DB /* path-configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "path-configuration.json"; sourceTree = "<group>"; };
-		8458F3EF2BD8139400867B66 /* hotwire-native-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "hotwire-native-ios"; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				848E12212BD813CA009BB0A4 /* HotwireNative in Frameworks */,
+				8C6329102CA82B14005F63C2 /* NativeCross in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,7 +93,6 @@
 		8458F3EC2BD8135600867B66 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8458F3EF2BD8139400867B66 /* hotwire-native-ios */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,7 +114,7 @@
 			);
 			name = Demo;
 			packageProductDependencies = (
-				848E12202BD813CA009BB0A4 /* HotwireNative */,
+				8C63290F2CA82B14005F63C2 /* NativeCross */,
 			);
 			productName = Demo;
 			productReference = 844BA7872B9A4843008F48DB /* Demo.app */;
@@ -147,6 +145,7 @@
 			);
 			mainGroup = 844BA77E2B9A4843008F48DB;
 			packageReferences = (
+				8C63290E2CA82B14005F63C2 /* XCLocalSwiftPackageReference "../../native-cross-ios" */,
 			);
 			productRefGroup = 844BA7882B9A4843008F48DB /* Products */;
 			projectDirPath = "";
@@ -393,10 +392,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		8C63290E2CA82B14005F63C2 /* XCLocalSwiftPackageReference "../../native-cross-ios" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../native-cross-ios";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		848E12202BD813CA009BB0A4 /* HotwireNative */ = {
+		8C63290F2CA82B14005F63C2 /* NativeCross */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = HotwireNative;
+			productName = NativeCross;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -2,7 +2,7 @@ import UIKit
 import WebKit
 
 /// A Session represents the main interface for managing
-/// a Hotwire app in a web view. Each Session manages a single web view
+/// a NativeCross app in a web view. Each Session manages a single web view
 /// so you should create multiple sessions to have multiple web views, for example
 /// when using modals or tabs
 public class Session: NSObject {
@@ -51,13 +51,15 @@ public class Session: NSObject {
     }
 
     public func visit(_ visitable: Visitable, action: VisitAction) {
-        visit(visitable, options: VisitOptions(action: action, response: nil))
+        visit(visitable, options: VisitOptions(action: action))
     }
 
     public func visit(_ visitable: Visitable, options: VisitOptions? = nil, reload: Bool = false) {
         guard visitable.visitableURL != nil else {
             fatalError("Visitable must provide a url!")
         }
+        
+        guard currentVisit == nil else {return}
 
         visitable.visitableDelegate = self
 
@@ -66,7 +68,6 @@ public class Session: NSObject {
         }
 
         let visit = makeVisit(for: visitable, options: options ?? VisitOptions())
-        currentVisit?.cancel()
         currentVisit = visit
 
         log("visit", ["location": visit.location, "options": visit.options, "reload": reload])
@@ -89,10 +90,6 @@ public class Session: NSObject {
         initialized = false
         visit(visitable)
         topmostVisit = currentVisit
-    }
-
-    public func clearSnapshotCache() {
-        bridge.clearSnapshotCache()
     }
 
     // MARK: Caching
@@ -236,30 +233,23 @@ extension Session: VisitableDelegate {
 
         guard let topmostVisit = topmostVisit, let currentVisit = currentVisit else { return }
 
-        if isSnapshotCacheStale {
-            clearSnapshotCache()
-            isSnapshotCacheStale = false
-        }
-
-        if isShowingStaleContent {
-            reload()
-            isShowingStaleContent = false
-        } else if visitable === topmostVisit.visitable && visitable.visitableViewController.isMovingToParent {
+        if visitable === topmostVisit.visitable && visitable.visitableViewController.isMovingToParent {
             // Back swipe gesture canceled
             if topmostVisit.state == .completed {
-                currentVisit.cancel()
+                // TODO: Figure out back gesture cancel
+//                currentVisit.cancel()
             } else {
-                visit(visitable, action: .advance)
+                visit(visitable, action: .push)
             }
         } else if visitable === currentVisit.visitable && currentVisit.state == .started {
             // Navigating forward - complete navigation early
             completeNavigationForCurrentVisit()
         } else if visitable !== topmostVisit.visitable {
             // Navigating backward from a web view screen to a web view screen.
-            visit(visitable, action: .restore)
+            visit(visitable, action: .pop)
         } else if visitable === previousVisit?.visitable {
             // Navigating backward from a native to a web view screen.
-            visit(visitable, action: .restore)
+            visit(visitable, action: .pop)
         }
     }
 
@@ -272,7 +262,7 @@ extension Session: VisitableDelegate {
             }
         } else if let topmostVisit = topmostVisit, visitable === topmostVisit.visitable && topmostVisit.state == .completed {
             // Reappearing after canceled navigation
-            visit(visitable, action: .restore)
+            visit(visitable, action: .pop   )
         }
     }
 
@@ -281,7 +271,6 @@ extension Session: VisitableDelegate {
     }
 
     public func visitableViewDidDisappear(_ visitable: Visitable) {
-        previousVisit?.cacheSnapshot()
         deactivateVisitable(visitable)
     }
 
@@ -328,7 +317,7 @@ extension Session: WebViewDelegate {
         guard let currentVisit = currentVisit, !initialized else { return }
 
         initialized = false
-        currentVisit.cancel()
+        currentVisit.failVisit()
         visitDidFail(currentVisit)
         visit(currentVisit, requestDidFailWithError: error)
     }
@@ -337,7 +326,7 @@ extension Session: WebViewDelegate {
         guard let currentVisit = currentVisit, initialized else { return }
 
         initialized = false
-        currentVisit.cancel()
+        currentVisit.failVisit()
         visit(currentVisit.visitable)
     }
 }

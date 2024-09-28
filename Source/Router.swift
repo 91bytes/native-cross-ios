@@ -1,6 +1,6 @@
 import Foundation
 
-/// A protocol to bridge back to Hotwire world from a native context. Use this
+/// A protocol to bridge back to NativeCross world from a native context. Use this
 /// to trigger a new page visit including routing and presentation.
 ///
 /// When responding to `NavigatorDelegate.handle(proposal:)`, to route
@@ -17,6 +17,6 @@ public protocol Router: AnyObject {
 
 extension Navigator: Router {
     public func route(_ url: URL) {
-        route(url, options: VisitOptions(action: .advance), parameters: nil)
+        route(url, options: VisitOptions(action: .push), parameters: nil)
     }
 }

@@ -1,14 +1,14 @@
-import HotwireNative
+import NativeCross
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        Hotwire.config.backButtonDisplayMode = .minimal
-        Hotwire.config.showDoneButtonOnModals = true
+        NativeCross.config.backButtonDisplayMode = .minimal
+        NativeCross.config.showDoneButtonOnModals = true
 
         #if DEBUG
-        Hotwire.config.debugLoggingEnabled = true
+        NativeCross.config.debugLoggingEnabled = true
         #endif
 
         return true
