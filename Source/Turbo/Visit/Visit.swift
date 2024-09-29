@@ -37,13 +37,6 @@ class Visit: NSObject {
         startVisit()
     }
 
-    func cancel() {
-        guard state == .started else { return }
-
-        state = .canceled
-        cancelVisit()
-    }
-
     func complete() {
         guard state == .started else { return }
 
@@ -68,12 +61,7 @@ class Visit: NSObject {
         delegate?.visitDidFinish(self)
     }
 
-    func cacheSnapshot() {
-        bridge.cacheSnapshot()
-    }
-
     func startVisit() {}
-    func cancelVisit() {}
     func completeVisit() {}
     func failVisit() {}
 

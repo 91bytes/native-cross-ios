@@ -5,10 +5,7 @@
   "rules": [
     {
       "patterns": [
-        "/new$",
-        "/edit$",
-        "/signin$",
-        "/strada-form$"
+        "/modal$"
       ],
       "properties": {
         "context": "modal",

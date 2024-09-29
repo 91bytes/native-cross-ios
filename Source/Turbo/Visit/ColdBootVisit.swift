@@ -22,14 +22,6 @@ final class ColdBootVisit: Visit {
         startRequest()
     }
 
-    override func cancelVisit() {
-        log("cancelVisit")
-
-        removeNavigationDelegate()
-        webView.stopLoading()
-        finishRequest()
-    }
-
     override func completeVisit() {
         log("completeVisit")
 
@@ -51,6 +43,14 @@ final class ColdBootVisit: Visit {
 
     private func log(_ name: String) {
         logger.debug("[ColdBootVisit] \(name) \(self.location.absoluteString)")
+    }
+}
+
+extension ColdBootVisit: WebViewPageLoadDelegate {
+    func webView(didLoadPage bridge: WebViewBridge) {
+        self.restorationIdentifier = restorationIdentifier
+        delegate?.visitDidRender(self)
+        complete()
     }
 }
 
@@ -102,13 +102,5 @@ extension ColdBootVisit: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         delegate?.visit(self, didReceiveAuthenticationChallenge: challenge, completionHandler: completionHandler)
-    }
-}
-
-extension ColdBootVisit: WebViewPageLoadDelegate {
-    func webView(_ bridge: WebViewBridge, didLoadPageWithRestorationIdentifier restorationIdentifier: String) {
-        self.restorationIdentifier = restorationIdentifier
-        delegate?.visitDidRender(self)
-        complete()
     }
 }

@@ -167,21 +167,6 @@ extension Navigator: SessionDelegate {
         hierarchyController.route(controller: controller, proposal: proposal)
     }
 
-    public func sessionDidStartFormSubmission(_ session: Session) {
-        if let url = session.topmostVisitable?.visitableURL {
-            delegate.formSubmissionDidStart(to: url)
-        }
-    }
-
-    public func sessionDidFinishFormSubmission(_ session: Session) {
-        if session == modalSession {
-            self.session.markSnapshotCacheAsStale()
-        }
-        if let url = session.topmostVisitable?.visitableURL {
-            delegate.formSubmissionDidFinish(at: url)
-        }
-    }
-
     public func session(_ session: Session, openExternalURL externalURL: URL) {
         let decision = delegate.handle(externalURL: externalURL)
         open(externalURL: externalURL, decision)

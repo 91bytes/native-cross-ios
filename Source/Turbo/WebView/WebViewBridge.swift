@@ -2,25 +2,18 @@ import WebKit
 
 protocol WebViewDelegate: AnyObject {
     func webView(_ webView: WebViewBridge, didProposeVisitToLocation location: URL, options: VisitOptions)
-    func webViewDidInvalidatePage(_ webView: WebViewBridge)
-    func webView(_ webView: WebViewBridge, didStartFormSubmissionToLocation location: URL)
-    func webView(_ webView: WebViewBridge, didFinishFormSubmissionToLocation location: URL)
     func webView(_ webView: WebViewBridge, didFailInitialPageLoadWithError: Error)
     func webView(_ webView: WebViewBridge, didFailJavaScriptEvaluationWithError error: Error)
 }
 
 protocol WebViewPageLoadDelegate: AnyObject {
-    func webView(_ webView: WebViewBridge, didLoadPageWithRestorationIdentifier restorationIdentifier: String)
+    func webView(didLoadPage webView: WebViewBridge)
 }
 
 protocol WebViewVisitDelegate: AnyObject {
-    func webView(_ webView: WebViewBridge, didStartVisitWithIdentifier identifier: String, hasCachedSnapshot: Bool, isPageRefresh: Bool)
-    func webView(_ webView: WebViewBridge, didStartRequestForVisitWithIdentifier identifier: String, date: Date)
-    func webView(_ webView: WebViewBridge, didCompleteRequestForVisitWithIdentifier identifier: String)
-    func webView(_ webView: WebViewBridge, didFailRequestForVisitWithIdentifier identifier: String, statusCode: Int)
-    func webView(_ webView: WebViewBridge, didFinishRequestForVisitWithIdentifier identifier: String, date: Date)
-    func webView(_ webView: WebViewBridge, didRenderForVisitWithIdentifier identifier: String)
-    func webView(_ webView: WebViewBridge, didCompleteVisitWithIdentifier identifier: String, restorationIdentifier: String)
+    func webView(didStartVisit webView: WebViewBridge)
+    func webView(didFailVisit webView: WebViewBridge)
+    func webView(didCompleteVisit webView: WebViewBridge)
 }
 
 /// The WebViewBridge is an internal class used for bi-directional communication
@@ -57,23 +50,10 @@ final class WebViewBridge {
     // MARK: - JS
 
     func visitLocation(_ location: URL, options: VisitOptions, restorationIdentifier: String?) {
-        callJavaScript(function: "window.turboNative.visitLocationWithOptionsAndRestorationIdentifier", arguments: [
+        callJavaScript(function: "window.nativeNavigation.visitLocationWithOptions", arguments: [
             location.absoluteString,
-            options.toJSON(),
-            restorationIdentifier
+            options.toJSON()
         ])
-    }
-
-    func clearSnapshotCache() {
-        callJavaScript(function: "window.turboNative.clearSnapshotCache")
-    }
-
-    func cacheSnapshot() {
-        callJavaScript(function: "window.turboNative.cacheSnapshot")
-    }
-
-    func cancelVisit(withIdentifier identifier: String) {
-        callJavaScript(function: "window.turboNative.cancelVisitWithIdentifier", arguments: [identifier])
     }
 
     // MARK: JavaScript Evaluation
@@ -110,38 +90,15 @@ extension WebViewBridge: ScriptMessageHandlerDelegate {
 
         switch message.name {
         case .pageLoaded:
-            pageLoadDelegate?.webView(self, didLoadPageWithRestorationIdentifier: message.restorationIdentifier!)
-        case .pageLoadFailed:
-            delegate?.webView(self, didFailInitialPageLoadWithError: TurboError.pageLoadFailure)
-        case .formSubmissionStarted:
-            delegate?.webView(self, didStartFormSubmissionToLocation: message.location!)
-        case .formSubmissionFinished:
-            delegate?.webView(self, didFinishFormSubmissionToLocation: message.location!)
-        case .pageInvalidated:
-            delegate?.webViewDidInvalidatePage(self)
+            pageLoadDelegate?.webView(didLoadPage: self)
         case .visitProposed:
             delegate?.webView(self, didProposeVisitToLocation: message.location!, options: message.options!)
-        case .visitProposalScrollingToAnchor:
-            break
-        case .visitProposalRefreshingPage:
-            break
         case .visitStarted:
-            visitDelegate?.webView(self, didStartVisitWithIdentifier: message.identifier!, hasCachedSnapshot: message.data["hasCachedSnapshot"] as! Bool, isPageRefresh: message.data["isPageRefresh"] as! Bool)
-        case .visitRequestStarted:
-            visitDelegate?.webView(self, didStartRequestForVisitWithIdentifier: message.identifier!, date: message.date)
-        case .visitRequestCompleted:
-            visitDelegate?.webView(self, didCompleteRequestForVisitWithIdentifier: message.identifier!)
-        case .visitRequestFailed:
-            visitDelegate?.webView(self, didFailRequestForVisitWithIdentifier: message.identifier!, statusCode: message.data["statusCode"] as! Int)
-        case .visitRequestFinished:
-            visitDelegate?.webView(self, didFinishRequestForVisitWithIdentifier: message.identifier!, date: message.date)
-        case .visitRendered:
-            visitDelegate?.webView(self, didRenderForVisitWithIdentifier: message.identifier!)
+            visitDelegate?.webView(didStartVisit: self)
+        case .visitFailed:
+            visitDelegate?.webView(didFailVisit: self)
         case .visitCompleted:
-            visitDelegate?.webView(self, didCompleteVisitWithIdentifier: message.identifier!, restorationIdentifier: message.restorationIdentifier!)
-        case .errorRaised:
-            let error = message.data["error"] as? String
-            logger.debug("[Bridge] JavaScript error: \(String(describing: error))")
+            visitDelegate?.webView(didCompleteVisit: self)
         case .log:
             guard let msg = message.data["message"] as? String else { return }
             logger.debug("[Bridge] ← log: \(msg)")

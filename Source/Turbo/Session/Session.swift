@@ -66,7 +66,7 @@ public class Session: NSObject {
         }
 
         let visit = makeVisit(for: visitable, options: options ?? VisitOptions())
-        currentVisit?.cancel()
+        currentVisit?.failVisit()
         currentVisit = visit
 
         log("visit", ["location": visit.location, "options": visit.options, "reload": reload])
@@ -89,22 +89,6 @@ public class Session: NSObject {
         initialized = false
         visit(visitable)
         topmostVisit = currentVisit
-    }
-
-    public func clearSnapshotCache() {
-        bridge.clearSnapshotCache()
-    }
-
-    // MARK: Caching
-
-    /// Clear the snapshot cache the next time the visitable view appears.
-    public func markSnapshotCacheAsStale() {
-        isSnapshotCacheStale = true
-    }
-
-    /// Reload the `Session` the next time the visitable view appears.
-    public func markContentAsStale() {
-        isShowingStaleContent = true
     }
 
     // MARK: Visitable activation
@@ -236,18 +220,14 @@ extension Session: VisitableDelegate {
 
         guard let topmostVisit = topmostVisit, let currentVisit = currentVisit else { return }
 
-        if isSnapshotCacheStale {
-            clearSnapshotCache()
-            isSnapshotCacheStale = false
-        }
-
         if isShowingStaleContent {
             reload()
             isShowingStaleContent = false
         } else if visitable === topmostVisit.visitable && visitable.visitableViewController.isMovingToParent {
             // Back swipe gesture canceled
             if topmostVisit.state == .completed {
-                currentVisit.cancel()
+                // TODO: Check this
+//                currentVisit.cancel()
             } else {
                 visit(visitable, action: .advance)
             }
@@ -281,7 +261,6 @@ extension Session: VisitableDelegate {
     }
 
     public func visitableViewDidDisappear(_ visitable: Visitable) {
-        previousVisit?.cacheSnapshot()
         deactivateVisitable(visitable)
     }
 
@@ -328,7 +307,7 @@ extension Session: WebViewDelegate {
         guard let currentVisit = currentVisit, !initialized else { return }
 
         initialized = false
-        currentVisit.cancel()
+        currentVisit.failVisit()
         visitDidFail(currentVisit)
         visit(currentVisit, requestDidFailWithError: error)
     }
@@ -337,7 +316,7 @@ extension Session: WebViewDelegate {
         guard let currentVisit = currentVisit, initialized else { return }
 
         initialized = false
-        currentVisit.cancel()
+        currentVisit.failVisit()
         visit(currentVisit.visitable)
     }
 }

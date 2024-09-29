@@ -17,10 +17,6 @@ struct ScriptMessage {
         Date(timeIntervalSince1970: timestamp / 1000.0)
     }
 
-    var restorationIdentifier: String? {
-        data["restorationIdentifier"] as? String
-    }
-
     var location: URL? {
         guard let locationString = data["location"] as? String else { return nil }
         return URL(string: locationString)
@@ -49,21 +45,10 @@ extension ScriptMessage {
 extension ScriptMessage {
     enum Name: String {
         case pageLoaded
-        case pageLoadFailed
-        case errorRaised
         case visitProposed
-        case visitProposalScrollingToAnchor
-        case visitProposalRefreshingPage
         case visitStarted
-        case visitRequestStarted
-        case visitRequestCompleted
-        case visitRequestFailed
-        case visitRequestFinished
-        case visitRendered
+        case visitFailed
         case visitCompleted
-        case formSubmissionStarted
-        case formSubmissionFinished
-        case pageInvalidated
         case log
     }
 }
